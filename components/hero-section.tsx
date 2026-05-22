@@ -33,10 +33,13 @@ function ScrollText({
   index: number
   total: number
 }) {
-  const segmentSize = 0.9 / total
-  const start = 0.05 + index * segmentSize
-  const fadeInEnd = start + segmentSize * 0.2
-  const fadeOutStart = start + segmentSize * 0.7
+  // Each line gets an equal portion of the scroll after the title (which takes 0-0.08)
+  // Lines occupy 0.08 to 0.95 of scroll progress
+  const availableRange = 0.87
+  const segmentSize = availableRange / total
+  const start = 0.08 + index * segmentSize
+  const fadeInEnd = start + segmentSize * 0.15
+  const fadeOutStart = start + segmentSize * 0.75
   const end = start + segmentSize
   
   const opacity = useTransform(
@@ -48,7 +51,7 @@ function ScrollText({
   const y = useTransform(
     scrollYProgress,
     [start, fadeInEnd, fadeOutStart, end],
-    [60, 0, 0, -60]
+    [30, 0, 0, -30]
   )
 
   return (
@@ -68,11 +71,12 @@ export function HeroSection() {
     offset: ["start start", "end end"]
   })
 
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.04], [1, 0])
-  const titleY = useTransform(scrollYProgress, [0, 0.04], [0, -60])
+  // Title stays visible for first 8% of scroll
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.06, 0.08], [1, 1, 0])
+  const titleY = useTransform(scrollYProgress, [0, 0.06, 0.08], [0, 0, -40])
 
   return (
-    <section ref={containerRef} className="relative h-[400vh]">
+    <section ref={containerRef} className="relative h-[600vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <GradientBackground />
         
