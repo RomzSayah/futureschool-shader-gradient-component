@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
+import { GradientBackground } from "./gradient-background"
 
 const studios = [
   {
@@ -59,8 +60,14 @@ export function StudiosSection() {
   const isInView = useInView(ref, { once: true, margin: "-50px" })
 
   return (
-    <section id="studios" className="relative bg-[#0a0a0a] py-32 md:py-48" ref={ref}>
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="studios" className="relative min-h-screen overflow-hidden py-32 md:py-48" ref={ref}>
+      {/* Gradient background continues here */}
+      <div className="absolute inset-0">
+        <GradientBackground />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
+      
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
