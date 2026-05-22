@@ -4,14 +4,24 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 import { GradientBackground } from "./gradient-background"
 
-const introLines = [
-  "Information is now abundant.",
-  "Tools are now powerful.",
-  "Anyone can generate.",
-  "But not everyone can direct.",
-  "Original thinking. Taste. Judgment.",
-  "Creative direction.",
-  "These are the new skills.",
+const allLines = [
+  // Intro
+  { text: "Information is now abundant.", type: "intro" },
+  { text: "Tools are now powerful.", type: "intro" },
+  { text: "Anyone can generate.", type: "intro" },
+  { text: "But not everyone can direct.", type: "intro" },
+  { text: "Original thinking. Taste. Judgment.", type: "intro" },
+  { text: "Creative direction.", type: "intro" },
+  { text: "These are the new skills.", type: "intro" },
+  // Manifesto
+  { text: "Creativity is the new currency.", type: "manifesto" },
+  { text: "AI can solve complex problems.", type: "manifesto" },
+  { text: "Humans are free to explore what makes us truly human.", type: "manifesto" },
+  { text: "Consciousness. Creativity. Connection. Soul.", type: "manifesto" },
+  { text: "We are not here to produce more content.", type: "manifesto" },
+  { text: "We train the next generation of creative directors of machines.", type: "manifesto" },
+  { text: "We exist to fight the slop.", type: "manifesto" },
+  { text: "To help humans become more original, more imaginative, and more alive.", type: "manifesto" },
 ]
 
 export function HeroSection() {
@@ -21,12 +31,12 @@ export function HeroSection() {
     offset: ["start start", "end start"],
   })
 
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0])
-  const titleY = useTransform(scrollYProgress, [0, 0.15], [0, -100])
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0])
+  const titleY = useTransform(scrollYProgress, [0, 0.08], [0, -100])
 
   return (
     <section ref={containerRef} className="relative">
-      {/* Fixed gradient background for the entire hero sequence */}
+      {/* Fixed gradient background for the entire sequence */}
       <div className="sticky top-0 h-screen overflow-hidden">
         <GradientBackground />
         
@@ -59,34 +69,33 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Intro text lines - appear sequentially as you scroll */}
+        {/* All text lines - appear sequentially as you scroll */}
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
-          <div className="max-w-4xl text-center">
-            {introLines.map((line, index) => {
-              const start = 0.12 + index * 0.1
-              const end = start + 0.08
-              
-              return (
-                <IntroLine
-                  key={index}
-                  line={line}
-                  scrollYProgress={scrollYProgress}
-                  start={start}
-                  end={end}
-                />
-              )
-            })}
-          </div>
+          {allLines.map((line, index) => {
+            const segmentSize = 0.85 / allLines.length
+            const start = 0.08 + index * segmentSize
+            const end = start + segmentSize * 0.7
+            
+            return (
+              <ScrollLine
+                key={index}
+                line={line.text}
+                scrollYProgress={scrollYProgress}
+                start={start}
+                end={end}
+              />
+            )
+          })}
         </div>
       </div>
       
       {/* Spacer for scroll height */}
-      <div className="h-[300vh]" />
+      <div className="h-[600vh]" />
     </section>
   )
 }
 
-function IntroLine({
+function ScrollLine({
   line,
   scrollYProgress,
   start,
@@ -99,18 +108,18 @@ function IntroLine({
 }) {
   const opacity = useTransform(
     scrollYProgress,
-    [start - 0.02, start, end, end + 0.02],
+    [start - 0.01, start, end, end + 0.01],
     [0, 1, 1, 0]
   )
   const y = useTransform(
     scrollYProgress,
-    [start - 0.02, start, end, end + 0.02],
-    [40, 0, 0, -40]
+    [start - 0.01, start, end, end + 0.01],
+    [60, 0, 0, -60]
   )
-  const blur = useTransform(
+  const scale = useTransform(
     scrollYProgress,
-    [start - 0.02, start, end, end + 0.02],
-    [10, 0, 0, 10]
+    [start - 0.01, start, end, end + 0.01],
+    [0.9, 1, 1, 0.9]
   )
 
   return (
@@ -118,12 +127,10 @@ function IntroLine({
       style={{ 
         opacity, 
         y,
-        filter: useTransform(blur, (v) => `blur(${v}px)`),
+        scale,
         position: "absolute",
-        left: 0,
-        right: 0,
       }}
-      className="font-serif text-3xl leading-relaxed text-white md:text-5xl lg:text-6xl"
+      className="max-w-5xl text-center font-serif text-4xl leading-tight text-white md:text-6xl lg:text-7xl"
     >
       {line}
     </motion.p>

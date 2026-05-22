@@ -1,6 +1,5 @@
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
-import { ManifestoSection } from "@/components/manifesto-section"
 import { StudiosSection } from "@/components/studios-section"
 import { InstructorsSection } from "@/components/instructors-section"
 import { OutcomesSection } from "@/components/outcomes-section"
@@ -13,7 +12,6 @@ export default function Page() {
     <main className="bg-black">
       <Navigation />
       <HeroSection />
-      <ManifestoSection />
       <StudiosSection />
       <InstructorsSection />
       <OutcomesSection />
