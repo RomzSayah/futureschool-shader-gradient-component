@@ -1,25 +1,35 @@
-import { GradientBackground } from "@/components/gradient-background"
-import { Instrument_Serif } from "next/font/google"
+"use client"
 
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-})
+import { useState } from "react"
+import { CinematicIntro } from "@/components/cinematic-intro"
+import { Navigation } from "@/components/navigation"
+import { HeroSection } from "@/components/hero-section"
+import { ManifestoSection } from "@/components/manifesto-section"
+import { StudiosSection } from "@/components/studios-section"
+import { InstructorsSection } from "@/components/instructors-section"
+import { OutcomesSection } from "@/components/outcomes-section"
+import { ShowcaseSection } from "@/components/showcase-section"
+import { ApplicationSection } from "@/components/application-section"
+import { FooterSection } from "@/components/footer-section"
 
 export default function Page() {
-  return (
-    <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <GradientBackground />
-      <div className="absolute inset-0 -z-10 bg-black/20" />
+  const [showIntro, setShowIntro] = useState(true)
 
-      <section className="px-6">
-        <h1
-          className={`${instrumentSerif.className} text-white text-center text-balance font-normal tracking-tight text-7xl`}
-        >
-          imagination is limit
-        </h1>
-      </section>
-    </main>
+  return (
+    <>
+      {showIntro && <CinematicIntro onComplete={() => setShowIntro(false)} />}
+
+      <main className="bg-black">
+        <Navigation />
+        <HeroSection />
+        <ManifestoSection />
+        <StudiosSection />
+        <InstructorsSection />
+        <OutcomesSection />
+        <ShowcaseSection />
+        <ApplicationSection />
+        <FooterSection />
+      </main>
+    </>
   )
 }

@@ -15,9 +15,9 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "The Future School | Creative Education for the Age of AI",
+  description:
+    "Train to become a creative director of machines. Hands-on studios in writing, film, fashion, music, spatial design, and more. Learn to collaborate with AI to create work that is unmistakably human.",
 }
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${instrumentSerif.variable} antialiased`}>
+    <html lang="en" className={`${instrumentSerif.variable} bg-black antialiased`}>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
