@@ -5,79 +5,70 @@ import { GradientBackground } from "./gradient-background"
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
       <GradientBackground />
-      <div className="absolute inset-0 bg-black/30" />
+      
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <div className="flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-32">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-center"
+          >
+            <h1 className="font-serif text-[12vw] leading-[0.85] tracking-tight text-white md:text-[10vw] lg:text-[8vw]">
+              <span className="block">The Future</span>
+              <span className="block italic">School</span>
+            </h1>
+          </motion.div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-6 text-sm uppercase tracking-[0.3em] text-white/60"
-        >
-          A Creative Institution for the Age of AI
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="font-serif text-5xl leading-tight text-white md:text-7xl lg:text-8xl"
-        >
-          <span className="text-balance">
-            Train to become a<br />
-            <span className="italic">creative director</span>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mt-8 max-w-xl text-center text-lg leading-relaxed text-white/70 md:text-xl"
+          >
+            Creative education for the age of AI.
             <br />
-            of machines
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-white/70"
-        >
-          Hands-on studios in writing, film, fashion, music, spatial design, and more.
-          Learn to collaborate with AI to create work that is unmistakably human.
-        </motion.p>
+            <span className="text-white/50">Hands-on studios. Working professionals. Real output.</span>
+          </motion.p>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="border-t border-white/10 px-6 py-6"
         >
-          <a
-            href="#apply"
-            className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-medium text-black transition-transform hover:scale-105"
-          >
-            Apply for Fall 2025
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-          <a
-            href="#manifesto"
-            className="inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm text-white transition-colors hover:bg-white/10"
-          >
-            Read the Manifesto
-          </a>
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-white/50">
+              <span>Writing</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Film</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Fashion</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Music</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Spatial Design</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Brand</span>
+              <span className="hidden text-white/20 md:inline">/</span>
+              <span>Product</span>
+            </div>
+            
+            <a
+              href="#apply"
+              className="group flex items-center gap-3 text-sm text-white transition-colors hover:text-white/80"
+            >
+              <span className="uppercase tracking-widest">Apply for Fall 2025</span>
+              <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
         </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <div className="flex flex-col items-center gap-2 text-white/40">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <div className="h-12 w-px bg-gradient-to-b from-white/40 to-transparent" />
-        </div>
-      </motion.div>
     </section>
   )
 }
