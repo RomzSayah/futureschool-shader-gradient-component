@@ -5,23 +5,62 @@ import { useRef } from "react"
 import { GradientBackground } from "./gradient-background"
 
 const allLines = [
-  // Intro
-  { text: "Information is now abundant.", type: "intro" },
-  { text: "Tools are now powerful.", type: "intro" },
-  { text: "Anyone can generate.", type: "intro" },
-  { text: "But not everyone can direct.", type: "intro" },
-  { text: "Original thinking. Taste. Judgment.", type: "intro" },
-  { text: "Creative direction.", type: "intro" },
-  { text: "These are the new skills.", type: "intro" },
-  // Manifesto
-  { text: "Creativity is the new currency.", type: "manifesto" },
-  { text: "AI can solve complex problems.", type: "manifesto" },
-  { text: "Humans are free to explore what makes us truly human.", type: "manifesto" },
-  { text: "Consciousness. Creativity. Connection. Soul.", type: "manifesto" },
-  { text: "We are not here to produce more content.", type: "manifesto" },
-  { text: "We train the next generation of creative directors of machines.", type: "manifesto" },
-  { text: "We exist to fight the slop.", type: "manifesto" },
-  { text: "To help humans become more original, more imaginative, and more alive.", type: "manifesto" },
+  // Opening - the shift
+  "Information is now abundant.",
+  "Tools are now powerful.",
+  "Anyone can generate.",
+  "But not everyone can direct.",
+  
+  // The question
+  "If AI can solve the world's toughest challenges,",
+  "what is left for humans?",
+  
+  // The answer
+  "We believe the answer is clear.",
+  "Creativity is the new currency.",
+  
+  // The philosophy
+  "Instead of fearing what AI will take,",
+  "we come back to what is truly human.",
+  "Consciousness.",
+  "Creativity.",
+  "Connection.",
+  "Soul.",
+  
+  // The vision
+  "We imagine a world where AI handles the complex,",
+  "while humans have time for creative exploration.",
+  "For pursuing inner interests.",
+  "For creating from the soul.",
+  
+  // The opportunity
+  "This is an exciting time.",
+  "We have the chance to make space",
+  "for what makes us really us.",
+  
+  // The tension
+  "AI is powerful.",
+  "Capable of boosting our intelligence and creativity",
+  "in ways we could not imagine before.",
+  
+  // The key
+  "But to dig deeper into our creative abilities,",
+  "we must learn to listen to ourselves.",
+  "And be creative in our use of AI.",
+  
+  // The mission
+  "We are not here to produce more content.",
+  "We train the next generation",
+  "of creative directors of machines.",
+  
+  // The purpose
+  "We exist to fight the slop.",
+  "To help humans become more original,",
+  "more imaginative,",
+  "and more alive.",
+  
+  // The name
+  "This is The Future School.",
 ]
 
 export function HeroSection() {
@@ -72,14 +111,14 @@ export function HeroSection() {
         {/* All text lines - appear sequentially as you scroll */}
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
           {allLines.map((line, index) => {
-            const segmentSize = 0.85 / allLines.length
-            const start = 0.08 + index * segmentSize
-            const end = start + segmentSize * 0.7
+            const segmentSize = 0.88 / allLines.length
+            const start = 0.06 + index * segmentSize
+            const end = start + segmentSize * 0.75
             
             return (
               <ScrollLine
                 key={index}
-                line={line.text}
+                line={line}
                 scrollYProgress={scrollYProgress}
                 start={start}
                 end={end}
@@ -90,7 +129,7 @@ export function HeroSection() {
       </div>
       
       {/* Spacer for scroll height */}
-      <div className="h-[600vh]" />
+      <div className="h-[1200vh]" />
     </section>
   )
 }
