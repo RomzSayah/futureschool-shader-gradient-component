@@ -36,7 +36,7 @@ const testimonials = [
   },
   {
     quote:
-      "This isn't about learning tools. It's about developing taste, judgment, and a creative point of view that machines can't replicate.",
+      "This is not about learning tools. It is about developing taste, judgment, and a creative point of view that machines cannot replicate.",
     name: "Priya Sharma",
     cohort: "Cohort 2, Brand Studio",
     outcome: "Now: Creative Director at a Fortune 500",
@@ -99,14 +99,14 @@ export function OutcomesSection() {
               className="border-l border-white/20 pl-6"
             >
               <p className="mb-6 font-serif text-lg leading-relaxed text-white/80">
-                &ldquo;{testimonial.quote}&rdquo;
+                {`"${testimonial.quote}"`}
               </p>
               <footer>
                 <p className="text-sm text-white">{testimonial.name}</p>
                 <p className="text-sm text-white/40">{testimonial.cohort}</p>
                 <p className="mt-2 text-xs text-white/60">{testimonial.outcome}</p>
               </footer>
-            </blockquote>
+            </motion.blockquote>
           ))}
         </div>
       </div>
