@@ -1,87 +1,110 @@
 "use client"
 
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
+import { motion, useScroll, useSpring, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion"
 import { useRef, useState } from "react"
 import { GradientBackground } from "./gradient-background"
 
 const textSequence = [
   "Information is now abundant.",
   "Tools are now powerful.",
-  "Anyone can generate.",
-  "But not everyone can direct.",
+  "Anyone can generate. But not everyone can direct.",
   "If AI can solve the world's toughest challenges, what is left for humans?",
-  "We believe the answer is clear.",
   "Creativity is the new currency.",
   "Instead of fearing what AI will take, we come back to what is truly human.",
   "Consciousness. Creativity. Connection. Soul.",
   "We are not here to produce more content.",
   "We train the next generation of creative directors of machines.",
-  "We exist to fight the slop.",
-  "To help humans become more original, more imaginative, and more alive.",
-  "This is The Future School.",
+  "We exist to fight the slop — to help humans become more original, more imaginative, and more alive.",
 ]
 
-// Build cumulative character index so the typewriter runs continuously across all lines
-const totalChars = textSequence.reduce((sum, line) => sum + line.length, 0)
+// Each line gets: typing time + hold time. We model this in "units".
+// Typing units = number of characters. Hold units = a constant per line.
+const HOLD_UNITS = 18 // characters worth of "hold" time after a line finishes typing
+const lineUnits = textSequence.map((l) => l.length + HOLD_UNITS)
+const totalUnits = lineUnits.reduce((a, b) => a + b, 0)
 
-function TypewriterLines({
+function TypewriterLine({
   scrollYProgress,
 }: {
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"]
 }) {
-  // Map scroll 0 -> 1 to total characters typed
-  const charsTyped = useTransform(scrollYProgress, [0, 1], [0, totalChars])
-  const [typed, setTyped] = useState(0)
-
-  useMotionValueEvent(charsTyped, "change", (latest) => {
-    setTyped(Math.floor(latest))
+  // Smooth scroll into a flowing progress value
+  const smoothed = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 22,
+    mass: 0.5,
   })
 
-  // Determine which line is currently being typed and how many chars per line
+  // Map 0.04 -> 0.94 of scroll across all units
+  const progress = useTransform(smoothed, [0.04, 0.94], [0, totalUnits])
+
+  const [units, setUnits] = useState(0)
+  useMotionValueEvent(progress, "change", (latest) => {
+    setUnits(Math.max(0, latest))
+  })
+
+  // Figure out which line we're on, and how many chars are typed within it
   let consumed = 0
-  const lineStates = textSequence.map((line) => {
-    const start = consumed
-    consumed += line.length
-    const end = consumed
-    const visible = Math.max(0, Math.min(line.length, typed - start))
-    const isActive = typed >= start && typed < end
-    const isComplete = typed >= end
-    return { line, visible, isActive, isComplete }
-  })
+  let activeIndex = 0
+  let charsInLine = 0
+  let isHolding = false
 
-  // Only render lines that have started; keep completed lines visible above
+  for (let i = 0; i < textSequence.length; i++) {
+    const lineLen = textSequence[i].length
+    const lineTotal = lineUnits[i]
+    if (units < consumed + lineTotal) {
+      activeIndex = i
+      const within = units - consumed
+      charsInLine = Math.min(lineLen, Math.floor(within))
+      isHolding = within >= lineLen
+      break
+    }
+    consumed += lineTotal
+    // Past the end: lock to the last line, fully typed
+    if (i === textSequence.length - 1) {
+      activeIndex = i
+      charsInLine = lineLen
+      isHolding = true
+    }
+  }
+
+  const activeLine = textSequence[activeIndex]
+  const visibleText = activeLine.slice(0, charsInLine)
+  const showCursor = !isHolding || charsInLine < activeLine.length
+
   return (
-    <div className="mx-auto flex h-full max-w-4xl flex-col justify-center px-6 md:px-12">
-      <div className="space-y-6 md:space-y-8">
-        {lineStates.map((state, index) => {
-          if (state.visible === 0) return null
-          return (
-            <p
-              key={index}
-              className="font-serif text-2xl leading-snug text-white text-balance sm:text-3xl md:text-4xl lg:text-5xl"
-            >
-              {state.line.slice(0, state.visible)}
-              {state.isActive && (
-                <span className="ml-0.5 inline-block h-[0.9em] w-[2px] -mb-1 animate-pulse bg-white align-middle" />
-              )}
-            </p>
-          )
-        })}
+    <div className="mx-auto flex h-full max-w-4xl items-center px-6 md:px-12">
+      <div className="w-full">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={activeIndex}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif text-2xl leading-snug text-white text-balance text-left sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
+          >
+            {visibleText}
+            {showCursor && (
+              <span className="ml-1 inline-block h-[0.9em] w-[2px] -mb-1 animate-pulse bg-white align-middle" />
+            )}
+          </motion.p>
+        </AnimatePresence>
       </div>
     </div>
   )
 }
 
 export function HeroSection() {
-  const introRef = useRef<HTMLDivElement>(null)
+  const typewriterRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
-    target: introRef,
+    target: typewriterRef,
     offset: ["start start", "end end"],
   })
 
   return (
     <>
-      {/* First screen: just the title, scroll past it like any normal section */}
+      {/* First screen: title only. Scroll past it like a normal section. */}
       <section className="relative h-screen w-full overflow-hidden">
         <GradientBackground />
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
@@ -102,12 +125,12 @@ export function HeroSection() {
         </div>
       </section>
 
-      {/* Second part: sticky typewriter section that runs continuously as you scroll */}
-      <section ref={introRef} className="relative h-[500vh]">
+      {/* Sticky typewriter: one line at a time, fades in/out, types as you scroll. */}
+      <section ref={typewriterRef} className="relative h-[600vh]">
         <div className="sticky top-0 h-screen w-full overflow-hidden">
           <GradientBackground />
           <div className="absolute inset-0 z-10">
-            <TypewriterLines scrollYProgress={scrollYProgress} />
+            <TypewriterLine scrollYProgress={scrollYProgress} />
           </div>
         </div>
       </section>
